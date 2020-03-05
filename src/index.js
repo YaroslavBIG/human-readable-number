@@ -30,23 +30,34 @@ module.exports = function toReadable (num) {
         90 : "ninety"
     };
     const arrNum = num.toString().split('');
-    //console.log(arrNum);
+    
     if (humanNumbers.hasOwnProperty(num)) {
         return humanNumbers[num];
     }
+    
     if (num > 20 && num < 100) {
         return `${humanNumbers[arrNum[0] * 10]} ${humanNumbers[arrNum[1]]}`;
     }  
     
     if (num > 99) {
-        if (num.toString()[1] === "0" && num.toString()[2] === "0"){
-            return `${humanNumbers[num.toString()[0]]} hundred`;
+        if (arrNum[1] === '0' && arrNum[2] === '0') {
+            return `${humanNumbers[arrNum[0]]} hundred`;
         }
-
-       // if (num.toString()[1] < 1) {
-       // return `${humanNumbers[num.toString()[0]]} hundred ${humanNumbers[num.toString()[2]]}`;
-       // }
     }
     
+    if (arrNum[1] >= 0 && arrNum[1] <= 1) {
+        const strToNum = Number(arrNum[1].toString() + arrNum[2].toString());
+        
+        if (humanNumbers.hasOwnProperty(strToNum)) {
+        return `${humanNumbers[arrNum[0]]} hundred ${humanNumbers[strToNum]}`;
+        }
+    }
     
+    if ( num > 119 && arrNum[2] === '0' && arrNum[1] !== '0') {
+        return `${humanNumbers[arrNum[0]]} hundred ${humanNumbers[arrNum[1] * 10]}`;
+    }
+
+    if (num > 120) {
+        return `${humanNumbers[arrNum[0]]} hundred ${humanNumbers[arrNum[1] * 10]} ${humanNumbers[arrNum[2]]}`;
+    }
 };
